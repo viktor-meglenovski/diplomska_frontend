@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classNames from "classnames";
+import {request, setAuthHeader} from "../helpers/axios_helper";
 
 export default class LoginForm extends React.Component{
 
@@ -22,17 +23,37 @@ export default class LoginForm extends React.Component{
         this.setState({[name] : value});
     };
 
+
     onSubmitLogin = (e) => {
-        this.state.onLogin(e, this.state.login, this.state.password);
+        e.preventDefault();
+        setAuthHeader('')
+        request("POST", "/login", {login: this.state.login, password: this.state.password})
+            .then((response) => {
+                setAuthHeader(response.data.token)
+                window.location.replace('/productClusters')
+                //TODO: Here redirect to /productClusters
+            }).catch((error) => {
+                //TODO: Show login error
+            }
+        );
     };
 
     onSubmitRegister = (e) => {
-        this.state.onRegister(e, this.state.firstName, this.state.lastName, this.state.login, this.state.password);
+        e.preventDefault();
+        request("POST", "/register", {firstName: this.state.firstName, lastName: this.state.lastName, login: this.state.login, password: this.state.password})
+            .then((response) => {
+                setAuthHeader(response.data.token)
+                //TODO: Here redirect to /productClusters
+            }).catch((error) => {
+                this.setState({componentToShow: "welcome"});
+                //TODO: Show login error
+            }
+        );
     };
 
     render() {
         return (
-            <div className="row justify-content-center">
+            <div className="row justify-content-center mt-5">
                 <div className="col-4">
                     <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                         <li className="nav-item" role="presentation">
