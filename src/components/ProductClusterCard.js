@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from 'react-router-dom';
 
 export default function ProductClusterCard(props) {
     const cardStyle = {
@@ -9,24 +10,24 @@ export default function ProductClusterCard(props) {
     const contentStyle = {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-end", // Align content to the bottom
+        justifyContent: "flex-end",
     };
 
     const imageStyle = {
-        height: "200px", // Set a fixed height for all images
-        objectFit: "cover", // Scale and crop the image to fit the fixed height
+        height: "195px",
+        objectFit: "cover",
     };
 
     function formatName(name){
-        if(name.length<60){
+        if(name.length<40){
             return name
         }
-        return name.substring(0,17)+'...'
+        return name.substring(0,40)+'...'
     }
 
     return (
-        <div className="col-3 mb-3"> {/* Adjust the grid column width as needed */}
-            <div className="border rounded p-2" style={cardStyle}>
+        <div className="col-3 mb-3">
+            <div className="border rounded p-2 bg-white" style={cardStyle}>
                 <img
                     className="product-image"
                     src={props.productCluster.cheapestProduct.image}
@@ -39,9 +40,15 @@ export default function ProductClusterCard(props) {
                         <span className="offset-2 col-5 badge rounded-pill bg-black text-white">{props.productCluster.cheapestProduct.store}</span>
                     </div>
                     <p style={{height:'70px'}} className="mb-0 text-center mt-2">
-                        <a href={`/productCluster/${props.productCluster.id}`} style={{textDecoration:'none', color:'#1a15bd'}} className="fw-bold">{formatName(props.productCluster.cheapestProduct.name)}</a>
+                        <Link to={`/productCluster/${props.productCluster.id}`} style={{ textDecoration: 'none', color: '#1a15bd' }} className="fw-bold">
+                            {formatName(props.productCluster.cheapestProduct.name)}
+                        </Link>
                     </p>
                     <p className="text-center fst-italic fw-bold">Starting from: {props.productCluster.cheapestProduct.currentPrice.price} МКД</p>
+                    <div className="row">
+                        <span className="fst-italic fw-bold col-7" style={{fontSize:'12px'}}>Updated: {props.productCluster.cheapestProduct.currentPrice.date}</span>
+                        <span className="col-4 badge rounded-pill bg-black text-white ms-3">{props.productCluster.numberOfResults} Results</span>
+                    </div>
                 </div>
             </div>
         </div>

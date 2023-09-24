@@ -4,32 +4,35 @@ import {BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useHistor
 import ProductClusters from "./ProductClusters";
 import HomePage from "./HomePage";
 import LoginForm from "./LoginForm";
-import {getAuthToken} from "../helpers/axios_helper";
+import {getAuthToken, getRole} from "../helpers/axios_helper";
 import Sidebar from "./Sidebar";
+import ProductClusterPage from "./ProductClusterPage";
+import ProductPage from "./ProductPage";
+import AdminPanel from "./AdminPanel";
 
 function App() {
     return (
         <div className="App">
             <Header/>
-            <div className="container-fluid">
-                <div className="row">
-                    {getAuthToken() && <Sidebar/>}
-                    <main className="col">
-                        <Router>
-                            <Routes>
-                                <Route path="/home" element={<HomePage/>}/>
-                                <Route path="/login" element={<LoginForm/>}/>
+                {getAuthToken() && <Sidebar/>}
+                <main className="ms-auto" style={{width:"85%", marginTop:"65.6px", padding:"15px 30px", height:"95vh", backgroundColor:"#EEE"}}>
+                    <Router>
+                        <Routes>
+                            <Route path="/home" element={<HomePage/>}/>
+                            <Route path="/login" element={<LoginForm/>}/>
 
-                                //secured routes
-                                {getAuthToken() && <Route path="/productClusters" element={<ProductClusters/>}/>}
+                            //secured routes
+                            {getAuthToken() && <Route path="/productClusters" element={<ProductClusters/>}/>}
+                            {getAuthToken() && <Route path="/productCluster/:id" element={<ProductClusterPage/>}/>}
+                            {getAuthToken() && <Route path="/product/:id" element={<ProductPage/>}/>}
 
-                                //default route
-                                <Route path="*" element={<Navigate to="/home"/>}/>
-                            </Routes>
-                        </Router>
-                    </main>
-                </div>
-            </div>
+                            {getAuthToken() && getRole() === "ROLE_ADMIN" && <Route path="/admin" element={<AdminPanel/>}/>}
+
+                            //default route
+                            <Route path="*" element={<Navigate to="/home"/>}/>
+                        </Routes>
+                    </Router>
+                </main>
         </div>
     );
 }

@@ -53,7 +53,7 @@ export default class LoginForm extends React.Component{
 
     render() {
         return (
-            <div className="row justify-content-center mt-5">
+            <div className="justify-content-center mt-5">
                 <div className="col-4">
                     <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                         <li className="nav-item" role="presentation">
