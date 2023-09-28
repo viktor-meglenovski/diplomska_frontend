@@ -15,6 +15,10 @@ export default function AdminPanel(props) {
     const [loadingAdding, setLoadingAdding] = useState(false);
     const [addingResult, setAddingResult] = useState(null)
 
+    const [loadingTraining,setLoadingTraining] = useState(false)
+    const [trainingDone, setTrainingDone] = useState(false)
+    const [trainingResponse, setTrainingResponse] = useState({})
+
     function scrapeData() {
         setLoadingScraping(true)
         setDisableButtons(true)
@@ -46,6 +50,34 @@ export default function AdminPanel(props) {
     function handleFileChange(event){
         setSelectedFile(event.target.files[0]);
         console.log(selectedFile)
+    }
+    function trainModel(){
+        setLoadingTraining(true)
+        setDisableButtons(true)
+        repository
+            .train_model()
+            .then((response) => {
+                console.log(response)
+                // if (response.data && response.data.csv_file) {
+                //     const blob = new Blob([response.data.csv_file], {type: 'text/csv'});
+                //     const url = window.URL.createObjectURL(blob);
+                //     const a = document.createElement('a');
+                //     a.href = url;
+                //     a.download = response.data.other_data.file_name;
+                //     a.click();
+                //     window.URL.revokeObjectURL(url);
+                // }
+                // setTrainingDone(true)
+                // setTrainingResponse(response.data.other_data)
+                // console.log(trainingResponse)
+            })
+            .catch((error) => {
+                // show error message
+                console.error(error);
+            }).finally(() => {
+            setLoadingTraining(false);
+            setDisableButtons(false)
+        });
     }
 
     function addData(){
@@ -128,12 +160,23 @@ export default function AdminPanel(props) {
                     </div>
                 )}
                 <hr/>
-                <h2>Re-Train Models</h2>
+                <div className="d-flex align-items-center">
+                    <h2 className="d-inline me-3">Re-Train Models</h2>
+                    {loadingTraining ? <CustomLoadingSpinner className="d-inline"/> : null}
+                </div>
                 <p>Re-train the models with the newest data.</p>
-                <button className="btn btn-success fw-bold rounded-pill mb-1" style={{width: "400px"}}
-                        disabled={disableButtons}>Retrain
-                    Models
+                <button className="btn btn-success fw-bold rounded-pill mb-1" style={{width: "400px"}} disabled={disableButtons} onClick={trainModel}>
+                    Re-train Models
                 </button>
+                {trainingDone && (
+                    <div className="mt-2">
+                        <h5>Training dataset created! The dataset contains information about all products that have data available for the last 5 scraping iterations:</h5>
+                        <ul>
+                            {trainingResponse.dates.map((d)=>(<li>{d.split(' ')[0]}</li>))}
+                        </ul>
+                        <p>Total <b>{trainingResponse.rows}</b> products are covered in the dataset.</p>
+                    </div>
+                )}
                 <hr/>
             </div>
         </div>

@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import ProductListItem from "./ProductListItem";
 
 export default function ProductClusterPage(props) {
-
     const {id} = useParams()
     const [productCluster, setProductCluster] = useState(null);
 
@@ -20,7 +19,7 @@ export default function ProductClusterPage(props) {
             });
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetch_cluster(id);
     }, [id]);
 
@@ -28,14 +27,18 @@ export default function ProductClusterPage(props) {
         productCluster && (
             <div className="row">
                 <div className="col-12 row container">
-                    <h3 className="col-10">{productCluster.category} &gt; {productCluster.cheapestProduct.name}</h3>
+                    <h3 className="col-10">{productCluster.category} &gt; {productCluster.products[0].name}</h3>
                     {productCluster.numberOfResults === 1 && <h5 className="col-2 text-end fst-italic">{productCluster.numberOfResults} Result</h5>}
                     {productCluster.numberOfResults > 1 && <h5 className="col-2 text-end fst-italic">{productCluster.numberOfResults} Results</h5>}
                     <hr/>
                     <div className="row ms-4">
-                        {productCluster.products && productCluster.products.map((line) =>
-                            <ProductListItem key={line.id} product={line}/>
-                        )}
+                        {productCluster.products && productCluster.products.map((line, index) => (
+                            <ProductListItem
+                                key={line.id}
+                                product={line}
+                                cheapest={index === 0}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

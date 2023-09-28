@@ -1,6 +1,5 @@
 import { request } from '../helpers/axios_helper';
 import {request_ml} from "../helpers/axios_ml_helper";
-import {da} from "plotly.js/src/traces/carpet/attributes";
 
 const Repository = {
     fetch_clusters:(pageNumber)=>{
@@ -34,6 +33,15 @@ const Repository = {
     },
     add_new_data:(data)=>{
         return request_ml("POST", `/admin/add_new_data`, data,{'Content-Type': 'multipart/form-data'})
+    },
+    train_model:()=>{
+        return request_ml("GET", `/admin/train`, {},{})
+    },
+    fetch_expected_ups:()=>{
+        return request("GET", `/product/expectedUps`, {})
+    },
+    fetch_expected_downs:()=>{
+        return request("GET", `/product/expectedDowns`, {})
     }
 }
 const Helpers = {

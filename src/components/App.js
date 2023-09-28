@@ -1,6 +1,6 @@
 import './App.css'
 import Header from './Header'
-import {BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useHistory} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import ProductClusters from "./ProductClusters";
 import HomePage from "./HomePage";
 import LoginForm from "./LoginForm";
@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 import ProductClusterPage from "./ProductClusterPage";
 import ProductPage from "./ProductPage";
 import AdminPanel from "./AdminPanel";
+import ExpectedUpsDowns from "./ExpectedUpsDowns";
 
 function App() {
     return (
@@ -25,6 +26,9 @@ function App() {
                             {getAuthToken() && <Route path="/productClusters" element={<ProductClusters/>}/>}
                             {getAuthToken() && <Route path="/productCluster/:id" element={<ProductClusterPage/>}/>}
                             {getAuthToken() && <Route path="/product/:id" element={<ProductPage/>}/>}
+                            {getAuthToken() && <Route path="/product/expectedUps" element={<ExpectedUpsDowns filterType="UP"/>}/>}
+                            {getAuthToken() && <Route path="/product/expectedDowns" element={<ExpectedUpsDowns filterType="DOWN"/>}/>}
+
 
                             {getAuthToken() && getRole() === "ROLE_ADMIN" && <Route path="/admin" element={<AdminPanel/>}/>}
 
