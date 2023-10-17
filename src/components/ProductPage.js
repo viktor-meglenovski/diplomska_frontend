@@ -10,7 +10,7 @@ export default function ProductPage(props) {
     const [visualization, setVisualization] = useState("")
 
     const imageStyle = {
-        height: "900px",
+        height: "800px",
         width: "100%",
         objectFit: "cover",
     };
@@ -89,7 +89,7 @@ export default function ProductPage(props) {
                                     </div>
                                 }
                             </div>
-                            <div className="border" style={{height:"80%"}}>
+                            <div className="border" style={{height:"78%"}}>
                                 <Plotly  data={visualization.data} layout={visualization.layout} config={visualization.config} className="w-100 h-100"/>
                             </div>
                             <div>

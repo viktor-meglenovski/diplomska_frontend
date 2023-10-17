@@ -10,33 +10,49 @@ import ProductClusterPage from "./ProductClusterPage";
 import ProductPage from "./ProductPage";
 import AdminPanel from "./AdminPanel";
 import ExpectedUpsDowns from "./ExpectedUpsDowns";
+import ModelStatistics from "./ModelStatistics";
 
 function App() {
     return (
         <div className="App">
             <Header/>
-                {getAuthToken() && <Sidebar/>}
-                <main className="ms-auto" style={{width:"85%", marginTop:"65.6px", padding:"15px 30px", height:"95vh", backgroundColor:"#EEE"}}>
+            {getAuthToken() && <Sidebar/>}
+            {!getAuthToken() &&
+                <Router>
+                <Routes>
+                    <Route path="/home" element={ <div style={{ width: "100%", backgroundColor: "#EEE", height:"95vh" }}><HomePage/></div>}/>
+                    <Route path="/login" element={<div style={{ width: "100%", backgroundColor: "#EEE", height:"95vh" }}><LoginForm/></div>}/>
+
+                    <Route path="*" element={<Navigate to="/home"/>}/>
+                </Routes>
+            </Router>}
+
+            {/* Other secured routes */}
+            {getAuthToken() && (
+                <main className="ms-auto" style={{
+                    width: "85%",
+                    marginTop: "65.6px",
+                    padding: "15px 30px",
+                    height: "95vh",
+                    backgroundColor: "#EEE"
+                }}>
                     <Router>
                         <Routes>
                             <Route path="/home" element={<HomePage/>}/>
-                            <Route path="/login" element={<LoginForm/>}/>
-
-                            //secured routes
-                            {getAuthToken() && <Route path="/productClusters" element={<ProductClusters/>}/>}
-                            {getAuthToken() && <Route path="/productCluster/:id" element={<ProductClusterPage/>}/>}
-                            {getAuthToken() && <Route path="/product/:id" element={<ProductPage/>}/>}
-                            {getAuthToken() && <Route path="/product/expectedUps" element={<ExpectedUpsDowns filterType="UP"/>}/>}
-                            {getAuthToken() && <Route path="/product/expectedDowns" element={<ExpectedUpsDowns filterType="DOWN"/>}/>}
-
-
-                            {getAuthToken() && getRole() === "ROLE_ADMIN" && <Route path="/admin" element={<AdminPanel/>}/>}
-
-                            //default route
-                            <Route path="*" element={<Navigate to="/home"/>}/>
+                            <Route path="/productClusters" element={<ProductClusters/>}/>
+                            <Route path="/productCluster/:id" element={<ProductClusterPage/>}/>
+                            <Route path="/product/:id" element={<ProductPage/>}/>
+                            <Route path="/product/expectedUps" element={<ExpectedUpsDowns filterType="UP"/>}/>
+                            <Route path="/product/expectedDowns" element={<ExpectedUpsDowns filterType="DOWN"/>}/>
+                            {getRole() === "ROLE_ADMIN" && <Route path="/admin" element={<AdminPanel/>}/>}
+                            {getRole() === "ROLE_ADMIN" &&
+                                <Route path="/modelStatistics" element={<ModelStatistics/>}/>}
+                            <Route path="*" element={<Navigate to="/productClusters"/>}/>
                         </Routes>
                     </Router>
                 </main>
+            )}
+
         </div>
     );
 }

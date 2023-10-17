@@ -28,6 +28,9 @@ const Repository = {
     get_visualization:(id)=>{
         return request_ml("GET", `/visualize/${id}`,{},{})
     },
+    get_model_statistics_visualization:()=>{
+      return request_ml("GET", '/admin/modelStatistics', {},{})
+    },
     scrape_data:()=>{
         return request_ml("GET", `/admin/scrape_data`,{},{})
     },
@@ -37,11 +40,11 @@ const Repository = {
     train_model:()=>{
         return request_ml("GET", `/admin/train`, {},{})
     },
-    fetch_expected_ups:()=>{
-        return request("GET", `/product/expectedUps`, {})
+    fetch_expected:(filterType, pageNumber)=>{
+        return request("GET", `/product/expected?pageNumber=${pageNumber}&type=${filterType}`, {})
     },
-    fetch_expected_downs:()=>{
-        return request("GET", `/product/expectedDowns`, {})
+    fetch_pagination_info_ups_downs:(filterType)=>{
+        return request("GET", `/product/expectedPagination?type=${filterType}`, {})
     }
 }
 const Helpers = {

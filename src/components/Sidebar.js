@@ -9,6 +9,8 @@ export default function Sidebar(){
             <a href="/product/expectedUps" className="btn bg-white text-black rounded-pill col-10 offset-1 mt-3 fw-bold">Expected Ups</a>
             <a href="/product/expectedDowns" className="btn bg-white text-black rounded-pill col-10 offset-1 mt-3 fw-bold">Expected Downs</a>
             {getRole() === "ROLE_ADMIN" && <a href="/admin" className="btn bg-white text-black rounded-pill col-10 offset-1 mt-3 fw-bold">Admin Panel</a>}
+            {getRole() === "ROLE_ADMIN" && <a href="/modelStatistics" className="btn bg-white text-black rounded-pill col-10 offset-1 mt-3 fw-bold">Model Statistics</a>}
+
         </nav>
     );
 }

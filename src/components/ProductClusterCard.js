@@ -15,7 +15,7 @@ export default function ProductClusterCard(props) {
     };
 
     const imageStyle = {
-        height: "240px",
+        height: "195px",
         objectFit: "cover",
     };
 
